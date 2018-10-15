@@ -1,5 +1,5 @@
 // Teodor-Adrian Mirea (2017)
-// Univerity Project - Photo Editor - C
+// University Project - Photo Editor - C
 
 #include<stdio.h>
 #include<math.h>
