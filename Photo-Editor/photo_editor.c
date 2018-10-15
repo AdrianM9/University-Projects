@@ -1,4 +1,4 @@
-// Teodor-Adrian Mirea
+// Teodor-Adrian Mirea (2017)
 // Univerity Project - Photo Editor - C
 
 #include<stdio.h>
