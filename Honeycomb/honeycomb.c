@@ -18,21 +18,19 @@ int read_queens(in, queens, int);
 int build_honeycomb(mat, queens, int, int [], char, int);
 void print(mat, int, int);
 
-int main()
-{
+int main() {
 	in input;	/*	the string which will contain every line from the input
-					source (only one line per processing) */
+				source (only one line per processing) */
 	queens q;	/*	array which contains the positions of the queens in the
-					honeycomb */
+				honeycomb */
 	mat honeycomb;	/*	matrix in which the honeycomb will be "drawn" and then
-					printed */
+				printed */
 
 	char c;		/*	character which shows how's the first honeycomb cell
 					(C - lower, R - higher) */
 	int v[CMAX], i, j, nr_q, max_col, max_row;
 
-	while(fgets(input, IN_SIZE, stdin)!=NULL)
-	{
+	while (fgets(input, IN_SIZE, stdin)!=NULL) {
 		//	initialising v and q with 0 and the honeycomb with blank spaces
 		initialize(v, q, honeycomb);
 
@@ -45,8 +43,7 @@ int main()
 		/*	calculation of the number of columns and maximum number of lines
 			in the honeycomb */
 		i = 0;
-		while(v[i] != 0)
-		{
+		while (v[i] != 0) {
 			if(v[i] >= max_row)
 				max_row = v[i];
 			max_col++;
@@ -59,7 +56,7 @@ int main()
 		/*	reading the positions of the queens into the array q and
 			setting the length of the array */
 		nr_q = 0;
-		if(input[j+1] == ' ')
+		if (input[j+1] == ' ')
 			nr_q=read_queens(input, q, j+2);
 
 		/*	building the honeycomb and remembering the maximum number of lines
@@ -75,86 +72,73 @@ int main()
 
 /*	the function initializes the elements of arrays with 0 and the honeycomb 
 	matrix with blank spaces */
-void initialize(int v[], queens q, mat honeycomb)
-{
+void initialize(int v[], queens q, mat honeycomb) {
 	int i, j;
-	for(i = 0; i < CMAX; i++)
+	for (i = 0; i < CMAX; i++)
 		v[i] = 0;
-	for(i = 0; i < 3*CMAX; i++)
+	for (i = 0; i < 3*CMAX; i++)
 		q[i] = 0;
-	for(i = 0; i <= 2*RMAX+2; i++)
+	for (i = 0; i <= 2*RMAX+2; i++)
 		for(j = 0;j <= 2*CMAX+2; j++)
 			honeycomb[i][j] = ' ';
 }
 
 /*	the function reads the number of lines for every column and puts them in
 	the array v */
-int read_columns(in input, int v[])
-{
+int read_columns (in input, int v[]) {
 	int i = 0, j = 0;
 
-	while(1)
-	{
+	while (true) {
 		/*	if the buffer reached the state-character for the first cell, exit
 			the reading of lines */
-		if(input[j] == 'R' || input[j] == 'C')
+		if (input[j] == 'R' || input[j] == 'C')
 			break;
-		else
-		{
-			//	save numbers with 2 digits if it is necesary
-			if((input[j+1] - '0' >= 0) && (input[j+1] - '0' <= 9))
-			{
-				v[i] = (input[j] - '0') * 10 + (input[j+1] - '0');
-				j += 3;	
-			}
-			else
-			{
-				v[i] = input[j] - '0';
-				j += 2;
-			}
-
-			i++;
+		
+		//	save numbers with 2 digits if it is necesary
+		if ((input[j+1] - '0' >= 0) && (input[j+1] - '0' <= 9)) {
+			v[i] = (input[j] - '0') * 10 + (input[j+1] - '0');
+			j += 3;	
 		}
+		else {
+			v[i] = input[j] - '0';
+			j += 2;
+		}
+
+		i++;
 	}
 	return j;	//	returning the position where the state-character is
 }
 
 /*	the function reads the pairs of positions for every queen and saves them
 	in the array q (even positions = column, odd positions = row) */
-int read_queens(in input, queens q, int j)
-{
+int read_queens(in input, queens q, int j) {
 	int i = 0;
 
-	do
-	{
+	do {
 		//	save numbers with 2 digits if it is necesary
-		if((input[j+1] - '0' >= 0) && (input[j+1] - '0' <= 9))
-		{
+		if ((input[j+1] - '0' >= 0) && (input[j+1] - '0' <= 9)) {
 			q[i] = (input[j] - '0') * 10 + (input[j+1] - '0');
 			j += 3;
 		}
-		else
-		{
+		else {
 			q[i] = input[j] - '0';
 			j += 2;
 		}
 
 		i++;
-	}while(input[j] != '\n' && input[j] != '\0');
+	} while (input[j] != '\n' && input[j] != '\0');
 
 	return i;	//	returning the number of elements in the array q
 }
 
 /*	the function builds the honeycomb in its final form */
 int build_honeycomb(mat honeycomb, queens q, int max_col,
-						int v[], char c, int nr_q)
-{
+						int v[], char c, int nr_q) {
 	int i, j, col, row, max_row = 0;
 
 	/*	going through the honeycomb through the columns and marking in the
 		matrix the place where a cell should be printed */
-	for(j = 0; j <= max_col; j++)
-	{
+	for (j = 0; j <= max_col; j++) {
 		/*	using mathematical calculations, the column-index of the center
 			of the cell (in the final honeycomb) for every cell is
 			2*read_column+1	*/
@@ -162,19 +146,16 @@ int build_honeycomb(mat honeycomb, queens q, int max_col,
 
 		/*	for every line, marking until the maximum number of columns on the current
 			row is excedeed */
-		for( i = 0; i < v[j]; i++)
-		{
+		for ( i = 0; i < v[j]; i++) {
 			//	all the above formulas were found using mathematical calculations
-			if(c == 'R')
-			{
+			if (c == 'R') {
 				if(j % 2 == 0)
 					row = 2 * i + 1;
 				else
 					row = 2 * (i + 1);
 			}
-			else
-			{
-				if(j % 2 == 0)
+			else {
+				if (j % 2 == 0)
 					row = 2 * (i + 1);
 				else
 					row = 2 * i + 1;
@@ -186,24 +167,21 @@ int build_honeycomb(mat honeycomb, queens q, int max_col,
 
 	/*	going through the array q and marking in the matrix the place where a
 		cell containing a queen exists */
-	for(i = 0; i < nr_q; i += 2)
-	{
+	for (i = 0; i < nr_q; i += 2) {
 		/*	using mathematical calculations, the column-index of the center
 			of the cell (in the final honeycomb) for every cell which contains
 			a queen is 2*read_column-1	*/
 		col = 2 * q[i] - 1;
 
 		//	all the above formulas were found using mathematical calculations
-		if(c == 'R')
-		{
-			if(q[i] % 2 == 0)
+		if (c == 'R') {
+			if (q[i] % 2 == 0)
 				row = 2 * q[i+1];
 			else
 				row = 2 * q[i+1] - 1;
 		}
-		else
-		{
-			if(q[i] % 2 == 0)
+		else {
+			if (q[i] % 2 == 0)
 				row = 2 * q[i+1] - 1;
 			else
 				row = 2 * q[i+1];
@@ -214,42 +192,38 @@ int build_honeycomb(mat honeycomb, queens q, int max_col,
 
 	/*	going through the whole matrix and placing '/', '_', '\' around the
 		center of the cell */
-	for(i = 1; i <= 2*RMAX+1; i++)	/*	the first line (0) never contains 'X'
+	for (i = 1; i <= 2*RMAX+1; i++)	/*	the first line (0) never contains 'X'
 										or "Q" */
-		for(j = 1; j <= 2*CMAX+1; j+=2)	/*	j=1 and j+=2 because only on the
-											odd columns the characters 'X' and
-											'Q' are found */
-		{
-			if(honeycomb[i][j] == 'X' || honeycomb[i][j] == 'Q')
-			{
+		for (j = 1; j <= 2*CMAX+1; j+=2) {	/*	j=1 and j+=2 because only on the
+								odd columns the characters 'X' and
+								'Q' are found */
+			if (honeycomb[i][j] == 'X' || honeycomb[i][j] == 'Q') {
 				honeycomb[i-1][j] = honeycomb[i+1][j] = '_';
 				honeycomb[i][j-1] = honeycomb[i+1][j+1] = '/';
 				honeycomb[i+1][j-1] = honeycomb[i][j+1] = '\\';
 
 				/*	saving the maximum row which contained the character 'X'
 					or 'Q' */
-				if(i > max_row)
+				if (i > max_row)
 					max_row = i;
 			}
 
 			//	remove the character 'X' because it is not needed anymore
-			if(honeycomb[i][j] == 'X')
+			if (honeycomb[i][j] == 'X')
 				honeycomb[i][j] = ' ';
 		}
 	return max_row + 1;	/*	returning max_row+1 because this is the last line
-							in the matrix which contains components of the 
-							honeycomb */
+					in the matrix which contains components of the 
+					honeycomb */
 
 }
 
 //	the function shows the final form of the honeycomb
-void print(mat honeycomb, int max_col, int max_row)
-{
+void print(mat honeycomb, int max_col, int max_row) {
 	int i, j;
 
-	for(i = 0; i <= max_row; i++)
-	{
-		for(j= 0 ;j <= 2*max_col; j++)
+	for (i = 0; i <= max_row; i++) {
+		for (j= 0 ;j <= 2*max_col; j++)
 			printf("%c", honeycomb[i][j]);
 		printf("\n");
 	}
